@@ -257,7 +257,7 @@ e.g. STAGE_DIMENSION_DEFAULTS in lib/screen-utils.js */ /* layout contants from 
 <link rel="stylesheet" href="https://scratch.mit.edu/projects.css">
 <link rel="stylesheet" href="https://scratch.mit.edu/studio.css">
 <link rel="stylesheet" href="https://scratch.mit.edu/css/lib/normalize.min.css">
-<script>
+  <script>
     // This function checks if the current URL has search parameters.
     function hasSearchParams() {
       return window.location.search.length > 0;
@@ -283,15 +283,17 @@ e.g. STAGE_DIMENSION_DEFAULTS in lib/screen-utils.js */ /* layout contants from 
       // Get all of the iframes on the page.
       var iframes = document.querySelectorAll('iframe');
 
-      // For each iframe, add the search parameters to the iframe's URL.
+      // For each iframe, add the search parameters to the iframe's URL if the current URL has search parameters.
       for (var i = 0; i < iframes.length; i++) {
         var iframe = iframes[i];
 
         // Get the iframe's URL.
         var iframeUrl = iframe.src;
 
-        // Add the search parameters to the iframe's URL.
-        iframeUrl = addSearchParamsToIframeUrl(iframeUrl, new URLSearchParams(window.location.search));
+        // Add the search parameters to the iframe's URL if the current URL has search parameters.
+        if (hasSearchParams()) {
+          iframeUrl = addSearchParamsToIframeUrl(iframeUrl, new URLSearchParams(window.location.search));
+        }
 
         // Set the iframe's URL.
         iframe.src = iframeUrl;
