@@ -5,16 +5,16 @@
       return window.location.search.length > 0;
     }
 
-    // This function adds the search parameters to the URL of an iframe.
-    function addSearchParamsToIframeUrl(iframeUrl, searchParams) {
-      if (searchParams.length > 0) {
-        iframeUrl += '?';
-
-        for (var key in searchParams) {
-          iframeUrl += key + '=' + searchParams.get(key) + '&';
+    // This function adds any search parameter to the URL of an iframe.
+    function addAnySearchParamsToIframeUrl(iframeUrl, searchParam) {
+      if (searchParam.length > 0) {
+        if (iframeUrl.indexOf('?') === -1) {
+          iframeUrl += '?';
+        } else {
+          iframeUrl += '&';
         }
 
-        iframeUrl = iframeUrl.substring(0, iframeUrl.length - 1); // Remove the trailing '&'.
+        iframeUrl += searchParam;
       }
 
       return iframeUrl;
@@ -25,16 +25,22 @@
       // If the website has search parameters, add them to the URLs of all of the iframes on the page.
       if (hasSearchParams()) {
         var iframes = document.querySelectorAll('iframe');
+        var searchParams = new URLSearchParams(window.location.search);
 
         for (var i = 0; i < iframes.length; i++) {
           var iframe = iframes[i];
           var iframeUrl = iframe.src;
-          iframeUrl = addSearchParamsToIframeUrl(iframeUrl, new URLSearchParams(window.location.search));
+
+          // For each search parameter, add it to the iframe's URL.
+          for (var key of searchParams.keys()) {
+            iframeUrl = addAnySearchParamsToIframeUrl(iframeUrl, key + '=' + searchParams.get(key));
+          }
+
           iframe.src = iframeUrl;
         }
       }
     });
-  </script>   
+  </script>  
     
     
     
