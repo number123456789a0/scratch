@@ -257,29 +257,48 @@ e.g. STAGE_DIMENSION_DEFAULTS in lib/screen-utils.js */ /* layout contants from 
 <link rel="stylesheet" href="https://scratch.mit.edu/projects.css">
 <link rel="stylesheet" href="https://scratch.mit.edu/studio.css">
 <link rel="stylesheet" href="https://scratch.mit.edu/css/lib/normalize.min.css">
-<script>
+  <script>
     // This function checks if the current window is inside an iframe.
     function detectIframe() {
       return window.self !== window.top;
     }
 
-    // This function extracts the search parameters from an iframe's URL.
-    function getIframeSearchParams(iframeUrl) {
-      return new URLSearchParams(iframeUrl.search);
+    // This function extracts the search parameters from the iframe's parent website's URL.
+    function getIframeParentWebsiteSearchParams() {
+      var iframeParentWebsiteUrl = window.parent.location.href;
+      var iframeParentWebsiteUrlComponents = iframeParentWebsiteUrl.split('?');
+
+      if (iframeParentWebsiteUrlComponents.length > 1) {
+        return new URLSearchParams(iframeParentWebsiteUrlComponents[1]);
+      } else {
+        return null;
+      }
     }
 
-    // This function is called when the page loads.
+    // This function checks if the iframe's parent website is using the search parameters.
+    function isIframeParentWebsiteUsingSearchParams() {
+      var iframeParentWebsiteSearchParams = getIframeParentWebsiteSearchParams();
+
+      return iframeParentWebsiteSearchParams !== null;
+    }
+
+    // This function is called when the iframe loads.
     window.addEventListener('load', function() {
-      // If the current window is inside an iframe, get the iframe's URL.
+      // If the iframe is embedded in a website, check if the iframe's parent website is using the search parameters.
       if (detectIframe()) {
-        var iframeUrl = window.location.href;
+        if (isIframeParentWebsiteUsingSearchParams()) {
+          // The iframe's parent website is using the search parameters.
 
-        // Extract the search parameters from the iframe's URL.
-        var searchParams = getIframeSearchParams(iframeUrl);
+          // Do something with this information.
+          // For example, you could log it to the console:
+          console.log('The iframe\'s parent website is using the search parameters.');
+        } else {
+          // The iframe's parent website is not using the search parameters.
 
-        // Do something with the search parameters.
-        // For example, you can log them to the console:
-        console.log(searchParams);
+          // Do something with this information.
+          // For example, you could log it to the console:
+          console.log('The iframe\'s parent website is not using the search parameters.');
+        }
       }
     });
   </script></head>
