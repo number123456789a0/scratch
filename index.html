@@ -259,14 +259,21 @@ e.g. STAGE_DIMENSION_DEFAULTS in lib/screen-utils.js */ /* layout contants from 
 <link rel="stylesheet" href="https://scratch.mit.edu/css/lib/normalize.min.css">
 <script>
     function detectIframe() {
+      // Check if the window is inside an iframe.
       if (window.self !== window.top) {
+        // Get the iframe's URL.
         var iframeUrl = window.location.href;
+
+        // Extract the search parameters from the iframe's URL.
         var searchParams = new URLSearchParams(iframeUrl.search);
 
+        // Do something with the search parameters.
+        // For example, you can log them to the console:
         console.log(searchParams);
       }
     }
 
+    // Detect the iframe when the page loads.
     window.addEventListener('load', detectIframe);
   </script></head>
   <body oncontextmenu="return false">
